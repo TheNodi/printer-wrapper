@@ -3,6 +3,7 @@
 namespace TheNodi\PrinterWrapper;
 
 use Symfony\Component\Process\Process;
+use TheNodi\PrinterWrapper\Exceptions\PrinterCommandException;
 
 class CommandLine
 {
@@ -15,7 +16,8 @@ class CommandLine
      */
     public function run($command, callable $onError = null)
     {
-        $onError = $onError ?: function () {
+        $onError = $onError ?: function ($code) use ($command) {
+            throw new PrinterCommandException("\"{$command}\" returned with status code {$code}");
         };
 
         $process = new Process($command);
