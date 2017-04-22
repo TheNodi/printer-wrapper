@@ -1,0 +1,35 @@
+{
+    "name": "thenodi/printer-wrapper",
+    "description": "Wrapper for lp printer commands",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leonardo Nodari",
+            "email": "nodarileonardo@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheNodi\\PrinterWrapper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TheNodi\\PrinterWrapper\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
