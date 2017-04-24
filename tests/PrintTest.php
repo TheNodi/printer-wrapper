@@ -24,12 +24,22 @@ class PrintTest extends TestCase
             ->andReturn('request id is PrinterA-1 (1 file(s))');
     }
 
+    /**
+     * Get Printer object to test
+     *
+     * @return Printer
+     */
+    protected function getPrinter()
+    {
+        return new Printer('PrinterA', $this->cli);
+    }
+
     /** @test */
     function it_can_print_a_file()
     {
         $this->mockRunMethod();
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->printFile('/tmp/randomfile.txt');
 
         // Assertion is done on mocking, avoid phpunit warning
@@ -46,7 +56,7 @@ class PrintTest extends TestCase
             'some=else',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->setOption('something')
             ->setOption('some', 'else')
             ->printFile('/tmp/randomfile.txt');
@@ -60,7 +70,7 @@ class PrintTest extends TestCase
     {
         $this->mockRunMethod();
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->setOption('something')
             ->setOption('some', 'else')
             ->resetOptions()
@@ -78,7 +88,7 @@ class PrintTest extends TestCase
             'media=A4',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->media(Printer::MEDIA_A4)
             ->printFile('/tmp/randomfile.txt');
 
@@ -94,7 +104,7 @@ class PrintTest extends TestCase
             'media=Letter',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->media(Printer::MEDIA_LETTER)
             ->printFile('/tmp/randomfile.txt');
 
@@ -110,7 +120,7 @@ class PrintTest extends TestCase
             'media=Legal,Upper',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->media(Printer::MEDIA_LEGAL, Printer::MEDIA_UPPER)
             ->printFile('/tmp/randomfile.txt');
 
@@ -126,7 +136,7 @@ class PrintTest extends TestCase
             'media=Custom.100x200',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->customMedia(100, 200)
             ->printFile('/tmp/randomfile.txt');
 
@@ -142,7 +152,7 @@ class PrintTest extends TestCase
             'landscape',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->orientation(Printer::ORIENTATION_LANDSCAPE)
             ->printFile('/tmp/randomfile.txt');
 
@@ -155,7 +165,7 @@ class PrintTest extends TestCase
     {
         $this->mockRunMethod();
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->orientation(Printer::ORIENTATION_LANDSCAPE)
             ->orientation(Printer::ORIENTATION_PORTRAIT)
             ->printFile('/tmp/randomfile.txt');
@@ -172,7 +182,7 @@ class PrintTest extends TestCase
             'orientation-requested=5',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->orientation(Printer::ORIENTATION_270_DEGREES)
             ->printFile('/tmp/randomfile.txt');
 
@@ -188,7 +198,7 @@ class PrintTest extends TestCase
             'sides=two-sided-short-edge',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->setTwoSided('short')
             ->printFile('/tmp/randomfile.txt');
 
@@ -204,7 +214,7 @@ class PrintTest extends TestCase
             'sides=two-sided-long-edge',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->orientation(Printer::ORIENTATION_PORTRAIT)
             ->twoSided()
             ->printFile('/tmp/randomfile.txt');
@@ -223,7 +233,7 @@ class PrintTest extends TestCase
             'sides=two-sided-short-edge',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->orientation(Printer::ORIENTATION_LANDSCAPE)
             ->twoSided()
             ->printFile('/tmp/randomfile.txt');
@@ -240,7 +250,7 @@ class PrintTest extends TestCase
             'sides=one-sided',
         ]);
 
-        (new Printer('PrinterA', $this->cli))
+        $this->getPrinter()
             ->oneSided()
             ->printFile('/tmp/randomfile.txt');
 
