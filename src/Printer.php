@@ -18,6 +18,13 @@ class Printer
     const MEDIA_MULTIPURPOSE = 'MultiPurpose'; // Multi-purpose paper tray
     const MEDIA_LARGE_CAPACITY = 'LargeCapacity'; // Large capacity paper tray
 
+    const ORIENTATION_PORTRAIT = null;
+    const ORIENTATION_LANDSCAPE = 'landscape';
+    const ORIENTATION_NO_ROTATION = 3;
+    const ORIENTATION_90_DEGREES = 4;
+    const ORIENTATION_270_DEGREES = 5;
+    const ORIENTATION_180_DEGREES = 6;
+
     /**
      * Printer identifier
      *
@@ -69,7 +76,11 @@ class Printer
      */
     public function setOption($name, $value = true)
     {
-        $this->options[$name] = $value;
+        if (is_null($value)) {
+            unset($this->options[$name]);
+        } else {
+            $this->options[$name] = $value;
+        }
 
         return $this;
     }
@@ -127,11 +138,35 @@ class Printer
      *
      * @param int $width
      * @param int $length
-     * @return Printer
+     * @return $this
      */
     public function customMedia($width, $length)
     {
         return $this->media("Custom.{$width}x{$length}");
+    }
+
+    /**
+     * Set page orientation
+     *
+     * Use Printer::ORIENTATION_* constants for readability.
+     *
+     * @param null|int|string $orientation
+     * @return $this
+     */
+    public function orientation($orientation)
+    {
+        if (is_null($orientation)) {
+            $this->setOption('orientation-requested', null);
+            $this->setOption('landscape', null);
+
+            return $this;
+        }
+
+        if (is_string($orientation)) {
+            return $this->setOption($orientation);
+        }
+
+        return $this->setOption('orientation-requested', $orientation);
     }
 
     /**

@@ -133,4 +133,50 @@ class PrintTest extends TestCase
         // Assertion is done on mocking, avoid phpunit warning
         $this->assertTrue(true);
     }
+
+    /** @test */
+    function it_can_set_landscape()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'landscape',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->orientation(Printer::ORIENTATION_LANDSCAPE)
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    function it_can_set_portrait()
+    {
+        $this->mockRunMethod();
+
+        (new Printer('PrinterA', $this->cli))
+            ->orientation(Printer::ORIENTATION_LANDSCAPE)
+            ->orientation(Printer::ORIENTATION_PORTRAIT)
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    function it_can_set_rotation_degrees()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'orientation-requested=5',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->orientation(Printer::ORIENTATION_270_DEGREES)
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
 }
