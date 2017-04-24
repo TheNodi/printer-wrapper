@@ -1,5 +1,9 @@
 # PHP Printer Wrapper
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/thenodi/printer-wrapper.svg?style=flat-square)](https://packagist.org/packages/thenodi/printer-wrapper)
+[![Build Status](https://img.shields.io/travis/TheNodi/printer-wrapper/master.svg?style=flat-square)](https://travis-ci.org/TheNodi/printer-wrapper)
+[![Total Downloads](https://img.shields.io/packagist/dt/thenodi/printer-wrapper.svg?style=flat-square)](https://packagist.org/packages/thenodi/printer-wrapper)
+
 Wrapper around unix `lp` commands used to send file to a printer, manage connected printers and see print queue.
 
 ## Installation
