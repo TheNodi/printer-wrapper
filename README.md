@@ -60,7 +60,7 @@ If you need to pass a custom option to the `lp` command use the `setOption` meth
     ->setOption('only-name')
     ->setOption('name', 'value')
     ->printFile('/path/to/file.txt');
-// => p -o only-name -o name=value ...
+// => lp -o only-name -o name=value ...
 ```
 
 ## Changelog
