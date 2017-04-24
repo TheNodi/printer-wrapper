@@ -117,4 +117,20 @@ class PrintTest extends TestCase
         // Assertion is done on mocking, avoid phpunit warning
         $this->assertTrue(true);
     }
+
+    /** @test */
+    function it_can_set_custom_media_type()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'media=Custom.100x200',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->customMedia(100, 200)
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
 }

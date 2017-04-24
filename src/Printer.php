@@ -123,6 +123,18 @@ class Printer
     }
 
     /**
+     * Set a custom media size.
+     *
+     * @param int $width
+     * @param int $length
+     * @return Printer
+     */
+    public function customMedia($width, $length)
+    {
+        return $this->media("Custom.{$width}x{$length}");
+    }
+
+    /**
      * Print a file
      *
      * @param string $path
