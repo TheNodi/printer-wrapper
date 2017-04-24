@@ -53,6 +53,16 @@ Print a document two-sided.
     ->printFile('/path/to/file.txt');
 ```
 
+If you need to pass a custom option to the `lp` command use the `setOption` method.
+```php
+<?php
+(new \TheNodi\PrinterWrapper\PrinterManager())
+    ->setOption('only-name')
+    ->setOption('name', 'value')
+    ->printFile('/path/to/file.txt');
+// => p -o only-name -o name=value ...
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
