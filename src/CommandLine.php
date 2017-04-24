@@ -16,6 +16,9 @@ class CommandLine
      */
     public function run($command, callable $onError = null)
     {
+        // Manually set lang to english so we can parse command output reliably
+        $command = 'LANG=en ' . $command;
+
         $onError = $onError ?: function ($code) use ($command) {
             throw new PrinterCommandException("\"{$command}\" returned with status code {$code}");
         };

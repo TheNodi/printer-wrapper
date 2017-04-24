@@ -49,7 +49,7 @@ class PrinterManager
      */
     protected function fetchPrinters()
     {
-        $output = $this->cli->run('LANG=en lpstat -a');
+        $output = $this->cli->run('lpstat -a');
 
         $printers = [];
 
@@ -82,7 +82,7 @@ class PrinterManager
      */
     public function default()
     {
-        $output = $this->cli->run('LANG=en lpstat -d');
+        $output = $this->cli->run('lpstat -d');
         $id = trim(substr($output, strrpos($output, " ") + 1));
 
         foreach ($this->printers() as $printer) {
