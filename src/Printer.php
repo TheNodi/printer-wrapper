@@ -170,6 +170,16 @@ class Printer
     }
 
     /**
+     * Set page orientation as landscape
+     *
+     * @return $this
+     */
+    public function landscape()
+    {
+        return $this->orientation(self::ORIENTATION_LANDSCAPE);
+    }
+
+    /**
      * Print two sided on given edge
      *
      * Short edge is suitable for landscape pages,

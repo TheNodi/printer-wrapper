@@ -234,7 +234,7 @@ class PrintTest extends TestCase
         ]);
 
         $this->getPrinter()
-            ->orientation(Printer::ORIENTATION_LANDSCAPE)
+            ->landscape()
             ->twoSided()
             ->printFile('/tmp/randomfile.txt');
 

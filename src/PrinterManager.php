@@ -2,6 +2,13 @@
 
 namespace TheNodi\PrinterWrapper;
 
+/**
+ * Manage all printers
+ *
+ * @package TheNodi\PrinterWrapper
+ *
+ * @mixin Printer
+ */
 class PrinterManager
 {
     /**
@@ -26,6 +33,24 @@ class PrinterManager
     public function __construct($cli = null)
     {
         $this->cli = $cli ?: new CommandLine();
+    }
+
+    /**
+     * Proxy commands to default printer
+     *
+     * @param string $name
+     * @param array $arguments
+     * @return $this|Printer
+     */
+    function __call($name, $arguments)
+    {
+        $printer = $this->default();
+
+        if (!is_null($printer) && method_exists($printer, $name)) {
+            return call_user_func_array([$printer, $name], $arguments);
+        }
+
+        throw new \RuntimeException("Method {$name} not found.");
     }
 
     /**
