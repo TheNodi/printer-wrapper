@@ -54,6 +54,10 @@ class PrinterManager
         $printers = [];
 
         foreach (explode("\n", $output) as $line) {
+            if (substr($line, 0, 1) == "\t") {
+                continue;
+            }
+
             $id = substr($line, 0, strpos($line, " "));
 
             if (!empty($id)) {

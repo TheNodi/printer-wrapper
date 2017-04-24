@@ -15,7 +15,8 @@ class ManagerTest extends TestCase
             ->once()
             ->andReturn(implode("\n", [
                 'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterB accepting requests since Thu Apr 20 21:26:29 2017',
+                'PrinterB not accepting requests since Thu Apr 20 21:26:29 2017 -',
+                '   Rejecting Jobs',
                 'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
             ]));
 
