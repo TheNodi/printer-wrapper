@@ -170,6 +170,66 @@ class Printer
     }
 
     /**
+     * Print two sided on given edge
+     *
+     * Short edge is suitable for landscape pages,
+     * long edge is suitable for portrait.
+     *
+     * @param string $edge Either "short" or "long"
+     * @return $this
+     */
+    public function setTwoSided($edge)
+    {
+        return $this->setOption('sides', "two-sided-{$edge}-edge");
+    }
+
+    /**
+     * Print on two sided.
+     *
+     * Automatically figures out side edge based
+     * on page orientation.
+     *
+     * @return $this
+     */
+    public function twoSided()
+    {
+        return $this->setTwoSided($this->isPortrait() ? 'long' : 'short');
+    }
+
+    /**
+     * Print on one side.
+     *
+     * @return $this
+     */
+    public function oneSided()
+    {
+        return $this->setOption('sides', "one-sided");
+    }
+
+    /**
+     * Determine if printing as portrait
+     *
+     * @return bool
+     */
+    protected function isPortrait()
+    {
+        if (
+            array_key_exists('landscape', $this->options) ||
+            (
+                array_key_exists('orientation-requested', $this->options)
+                && in_array($this->options['orientation-requested'], [
+                    self::ORIENTATION_90_DEGREES,
+                    self::ORIENTATION_270_DEGREES
+                ])
+            )
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Print a file
      *
      * @param string $path

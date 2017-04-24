@@ -179,4 +179,72 @@ class PrintTest extends TestCase
         // Assertion is done on mocking, avoid phpunit warning
         $this->assertTrue(true);
     }
+
+    /** @test */
+    function it_can_print_two_sided()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'sides=two-sided-short-edge',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->setTwoSided('short')
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    function it_can_print_two_sided_on_portrait()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'sides=two-sided-long-edge',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->orientation(Printer::ORIENTATION_PORTRAIT)
+            ->twoSided()
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    function it_can_print_two_sided_on_landscape()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'landscape',
+            '-o',
+            'sides=two-sided-short-edge',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->orientation(Printer::ORIENTATION_LANDSCAPE)
+            ->twoSided()
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    function it_can_print_one_sided()
+    {
+        $this->mockRunMethod([
+            '-o',
+            'sides=one-sided',
+        ]);
+
+        (new Printer('PrinterA', $this->cli))
+            ->oneSided()
+            ->printFile('/tmp/randomfile.txt');
+
+        // Assertion is done on mocking, avoid phpunit warning
+        $this->assertTrue(true);
+    }
 }
