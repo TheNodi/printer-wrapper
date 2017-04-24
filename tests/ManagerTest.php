@@ -7,18 +7,46 @@ use TheNodi\PrinterWrapper\Printer;
 
 class ManagerTest extends TestCase
 {
-    /** @test */
-    function it_can_retrieve_all_printers()
+    /**
+     * Mock printers
+     *
+     * @return $this
+     */
+    protected function mockPrinters()
     {
         $this->cli->shouldReceive('run')
             ->with('lpstat', '-a')
             ->once()
             ->andReturn(implode("\n", [
-                'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterB not accepting requests since Thu Apr 20 21:26:29 2017 -',
+                'PrinterA accepting requests since Thu Jan 01 00:00:00 1970',
+                'PrinterB not accepting requests since Thu Jan 01 00:00:00 1970 -',
                 '   Rejecting Jobs',
-                'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
+                'PrinterC accepting requests since Thu Jan 01 00:00:00 1970',
             ]));
+
+        return $this;
+    }
+
+    /**
+     * Mock default printer
+     *
+     * @param string $printer Printer name
+     * @return $this
+     */
+    protected function mockDefaultPrinter($printer)
+    {
+        $this->cli->shouldReceive('run')
+            ->with('lpstat', '-d')
+            ->once()
+            ->andReturn('system default destination: ' . $printer);
+
+        return $this;
+    }
+
+    /** @test */
+    function it_can_retrieve_all_printers()
+    {
+        $this->mockPrinters();
 
         $printers = $this->manager->printers();
 
@@ -46,18 +74,8 @@ class ManagerTest extends TestCase
     /** @test */
     function it_can_find_default_printer()
     {
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-a')
-            ->once()
-            ->andReturn(implode("\n", [
-                'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterB accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
-            ]));
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-d')
-            ->once()
-            ->andReturn('system default destination: PrinterB');
+        $this->mockPrinters();
+        $this->mockDefaultPrinter('PrinterB');
 
         $printer = $this->manager->default();
 
@@ -68,18 +86,8 @@ class ManagerTest extends TestCase
     /** @test */
     function it_may_not_find_default_printer()
     {
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-a')
-            ->once()
-            ->andReturn(implode("\n", [
-                'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterB accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
-            ]));
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-d')
-            ->once()
-            ->andReturn('system default destination: PrinterD');
+        $this->mockPrinters();
+        $this->mockDefaultPrinter('PrinterD');
 
         $printer = $this->manager->default();
 
@@ -89,18 +97,8 @@ class ManagerTest extends TestCase
     /** @test */
     function it_proxies_commands_to_default_printer()
     {
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-a')
-            ->once()
-            ->andReturn(implode("\n", [
-                'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterB accepting requests since Thu Apr 20 21:26:29 2017',
-                'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
-            ]));
-        $this->cli->shouldReceive('run')
-            ->with('lpstat', '-d')
-            ->once()
-            ->andReturn('system default destination: PrinterB');
+        $this->mockPrinters();
+        $this->mockDefaultPrinter('PrinterB');
 
         $this->assertInstanceOf(Printer::class, $this->manager->landscape());
     }
