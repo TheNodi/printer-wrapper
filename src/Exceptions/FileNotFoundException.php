@@ -2,7 +2,7 @@
 
 namespace TheNodi\PrinterWrapper\Exceptions;
 
-class PrinterCommandException extends \RuntimeException
+class FileNotFoundException extends \RuntimeException
 {
 
 }
