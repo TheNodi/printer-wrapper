@@ -3,6 +3,7 @@
 namespace TheNodi\PrinterWrapper;
 
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 use TheNodi\PrinterWrapper\Exceptions\PrinterCommandException;
 
 class CommandLine
@@ -11,19 +12,47 @@ class CommandLine
      * Run the given command and return the output.
      *
      * @param  string $command
-     * @param  callable $onError
+     * @param  string|array $args
+     * @param  null|callable $onError
      * @return string
      */
-    public function run($command, callable $onError = null)
+    public function run($command, $args = [], callable $onError = null)
     {
-        // Manually set lang to english so we can parse command output reliably
-        $command = 'LANG=en ' . $command;
+        $process = $this->buildProcess($command, $args);
 
-        $onError = $onError ?: function ($code) use ($command) {
-            throw new PrinterCommandException("\"{$command}\" returned with status code {$code}");
+        return $this->runProcess($process, $onError);
+    }
+
+    /**
+     * Build process from array
+     *
+     * @param string $command
+     * @param string|array $args
+     * @return Process
+     */
+    protected function buildProcess($command, $args = [])
+    {
+        $args = is_array($args) ? $args : [$args];
+
+        return (new ProcessBuilder())
+            ->setPrefix($command)
+            ->setArguments($args)
+            ->setEnv('LANG', 'en')
+            ->getProcess();
+    }
+
+    /**
+     * Run process and return the output.
+     *
+     * @param Process $process
+     * @param null|callable $onError
+     * @return string
+     */
+    protected function runProcess(Process $process, callable $onError = null)
+    {
+        $onError = $onError ?: function ($code, $output) use ($process) {
+            throw new PrinterCommandException("\"{$process->getCommandLine()}\" returned with status code {$code}");
         };
-
-        $process = new Process($command);
 
         $processOutput = '';
         $process->setTimeout(null)->run(function ($type, $line) use (&$processOutput) {

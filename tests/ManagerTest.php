@@ -11,7 +11,7 @@ class ManagerTest extends TestCase
     function it_can_retrieve_all_printers()
     {
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -a'])
+            ->with('lpstat', '-a')
             ->once()
             ->andReturn(implode("\n", [
                 'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
@@ -32,7 +32,7 @@ class ManagerTest extends TestCase
     function it_does_not_run_fetch_multiple_times()
     {
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -a'])
+            ->with('lpstat', '-a')
             ->once()
             ->andReturn('');
 
@@ -46,7 +46,7 @@ class ManagerTest extends TestCase
     /** @test */
     function it_can_find_default_printer() {
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -a'])
+            ->with('lpstat', '-a')
             ->once()
             ->andReturn(implode("\n", [
                 'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
@@ -54,7 +54,7 @@ class ManagerTest extends TestCase
                 'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
             ]));
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -d'])
+            ->with('lpstat', '-d')
             ->once()
             ->andReturn('system default destination: PrinterB');
 
@@ -67,7 +67,7 @@ class ManagerTest extends TestCase
     /** @test */
     function it_may_not_find_default_printer() {
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -a'])
+            ->with('lpstat', '-a')
             ->once()
             ->andReturn(implode("\n", [
                 'PrinterA accepting requests since Thu Apr 20 21:26:29 2017',
@@ -75,7 +75,7 @@ class ManagerTest extends TestCase
                 'PrinterC accepting requests since Thu Apr 20 21:26:29 2017',
             ]));
         $this->cli->shouldReceive('run')
-            ->withArgs(['lpstat -d'])
+            ->with('lpstat', '-d')
             ->once()
             ->andReturn('system default destination: PrinterD');
 

@@ -51,13 +51,19 @@ class Printer
      */
     public function printFile($path)
     {
-        $this->cli->run("lp -d {$this->getId()} {$path}", function ($code, $output) use ($path) {
-            if (strpos($output, 'No such file or directory') !== false) {
-                throw new FileNotFoundException("File not found: {$path}");
-            }
+        $this->cli->run("lp",
+            [
+                '-d',
+                $this->getId(),
+                $path
+            ],
+            function ($code, $output) use ($path) {
+                if (strpos($output, 'No such file or directory') !== false) {
+                    throw new FileNotFoundException("File not found: {$path}");
+                }
 
-            throw new PrinterCommandException("Print command returned with status code {$code}");
-        });
+                throw new PrinterCommandException("Print command returned with status code {$code}");
+            });
 
         return $this;
     }

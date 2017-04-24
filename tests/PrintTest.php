@@ -10,7 +10,14 @@ class PrintTest extends TestCase
     function it_can_print_a_file()
     {
         $this->cli->shouldReceive('run')
-            ->withArgs(['lp -d PrinterA /tmp/randomfile.txt'])
+            ->with('lp',
+                [
+                    '-d',
+                    'PrinterA',
+                    '/tmp/randomfile.txt'
+                ],
+                \Mockery::type('callable')
+            )
             ->once()
             ->andReturn('request id is PrinterA-1 (1 file(s))');
 
