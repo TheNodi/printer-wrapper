@@ -23,6 +23,13 @@ class Printer
     protected $cli;
 
     /**
+     * Print options
+     *
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * Printer constructor.
      * @param string $id
      * @param CommandLine $cli
@@ -44,6 +51,50 @@ class Printer
     }
 
     /**
+     * Set print option
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return $this
+     */
+    public function setOption($name, $value = true)
+    {
+        $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Reset print options
+     *
+     * @return $this
+     */
+    public function resetOptions()
+    {
+        $this->options = [];
+
+        return $this;
+    }
+
+    /**
+     * Build lp options
+     *
+     * @return array
+     */
+    protected function buildOptions()
+    {
+        $options = [];
+
+        foreach ($this->options as $name => $value) {
+            $options[] = '-o';
+
+            $options[] = $value === true ? $name : "{$name}={$value}";
+        }
+
+        return $options;
+    }
+
+    /**
      * Print a file
      *
      * @param string $path
@@ -51,19 +102,15 @@ class Printer
      */
     public function printFile($path)
     {
-        $this->cli->run("lp",
-            [
-                '-d',
-                $this->getId(),
-                $path
-            ],
-            function ($code, $output) use ($path) {
-                if (strpos($output, 'No such file or directory') !== false) {
-                    throw new FileNotFoundException("File not found: {$path}");
-                }
+        $args = array_merge(['-d', $this->getId()], $this->buildOptions(), [$path]);
 
-                throw new PrinterCommandException("Print command returned with status code {$code}");
-            });
+        $this->cli->run("lp", $args, function ($code, $output) use ($path) {
+            if (strpos($output, 'No such file or directory') !== false) {
+                throw new FileNotFoundException("File not found: {$path}");
+            }
+
+            throw new PrinterCommandException("Print command returned with status code {$code}");
+        });
 
         return $this;
     }
