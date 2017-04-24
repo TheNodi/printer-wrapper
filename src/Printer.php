@@ -2,12 +2,22 @@
 
 namespace TheNodi\PrinterWrapper;
 
-
 use TheNodi\PrinterWrapper\Exceptions\FileNotFoundException;
 use TheNodi\PrinterWrapper\Exceptions\PrinterCommandException;
 
 class Printer
 {
+    const MEDIA_LETTER = 'Letter'; // US Letter (8.5x11 inches, or 216x279mm)
+    const MEDIA_LEGAL = 'Legal'; // US Legal (8.5x14 inches, or 216x356mm)
+    const MEDIA_A4 = 'A4'; // ISO A4 (8.27x11.69 inches, or 210x297mm)
+    const MEDIA_COM10 = 'COM10'; // US #10 Envelope (9.5x4.125 inches, or 241x105mm)
+    const MEDIA_DL = 'DL'; // ISO DL Envelope (8.66x4.33 inches, or 220x110mm)
+    const MEDIA_TRANSPARENCY = 'Transparency'; // Transparency media type or source
+    const MEDIA_UPPER = 'Upper'; // Upper paper tray
+    const MEDIA_LOWER = 'Lower'; // Lower paper tray
+    const MEDIA_MULTIPURPOSE = 'MultiPurpose'; // Multi-purpose paper tray
+    const MEDIA_LARGE_CAPACITY = 'LargeCapacity'; // Large capacity paper tray
+
     /**
      * Printer identifier
      *
@@ -88,10 +98,28 @@ class Printer
         foreach ($this->options as $name => $value) {
             $options[] = '-o';
 
+            $value = is_array($value) ? implode(',', $value) : $value;
             $options[] = $value === true ? $name : "{$name}={$value}";
         }
 
         return $options;
+    }
+
+    /**
+     * Set printer media type.
+     * Multiple media are supported and can be achieved
+     * passing multiple arguments or an array.
+     *
+     * Use Printer::MEDIA_* constants for quick reference.
+     *
+     * @params
+     * @return $this
+     */
+    public function media()
+    {
+        $type = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
+
+        return $this->setOption('media', $type);
     }
 
     /**
