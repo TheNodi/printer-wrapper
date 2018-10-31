@@ -2,6 +2,11 @@
 
 All notable changes to `printer-wrapper` will be documented in this file
 
+## 0.2 - 2018-10-31
+
+- Require PHP >= 7.1.3
+- Upgrade to Symfony 4
+
 ## 0.1 - 2017-04-24
 
 - List all printers
