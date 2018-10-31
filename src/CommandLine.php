@@ -3,7 +3,6 @@
 namespace TheNodi\PrinterWrapper;
 
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 use TheNodi\PrinterWrapper\Exceptions\PrinterCommandException;
 
 class CommandLine
@@ -34,11 +33,12 @@ class CommandLine
     {
         $args = is_array($args) ? $args : [$args];
 
-        return (new ProcessBuilder())
-            ->setPrefix($command)
-            ->setArguments($args)
-            ->setEnv('LANG', 'en')
-            ->getProcess();
+        return new Process(
+            $command,
+            null,
+            ['LANG' => 'en',],
+            $args
+        );
     }
 
     /**
