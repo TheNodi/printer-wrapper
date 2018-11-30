@@ -2,6 +2,10 @@
 
 All notable changes to `printer-wrapper` will be documented in this file
 
+## 0.2.1 - 2018-11.30
+
+- Merge process args into command
+
 ## 0.2 - 2018-10-31
 
 - Require PHP >= 7.1.3
