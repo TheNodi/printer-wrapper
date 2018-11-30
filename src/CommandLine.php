@@ -31,13 +31,13 @@ class CommandLine
      */
     protected function buildProcess($command, $args = [])
     {
+        $command = is_array($command) ? $command : [$command];
         $args = is_array($args) ? $args : [$args];
 
         return new Process(
-            $command,
+            array_merge($command, $args),
             null,
-            ['LANG' => 'en',],
-            $args
+            ['LANG' => 'en']
         );
     }
 
