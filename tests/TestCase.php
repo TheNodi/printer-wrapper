@@ -3,6 +3,7 @@
 namespace TheNodi\PrinterWrapper\Tests;
 
 
+use Mockery;
 use TheNodi\PrinterWrapper\CommandLine;
 use TheNodi\PrinterWrapper\PrinterManager;
 
@@ -11,7 +12,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * CommandLine mock
      *
-     * @var CommandLine|\Mockery\MockInterface
+     * @var CommandLine&\Mockery\MockInterface
      */
     protected $cli;
 
@@ -20,22 +21,22 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @var PrinterManager
      */
-    protected $manager;
+    protected PrinterManager $manager;
 
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->cli = \Mockery::mock(CommandLine::class);
+        $this->cli = Mockery::mock(CommandLine::class);
         $this->manager = new PrinterManager($this->cli);
     }
 
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        \Mockery::close();
+        Mockery::close();
     }
 }

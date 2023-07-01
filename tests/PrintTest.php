@@ -2,16 +2,17 @@
 
 namespace TheNodi\PrinterWrapper\Tests;
 
+use Mockery;
 use TheNodi\PrinterWrapper\Printer;
 
-class PrintTest extends TestCase
+final class PrintTest extends TestCase
 {
     /**
      * Mock the run method with given options
      *
-     * @param array $options
+     * @param string[] $options
      */
-    protected function mockRunMethod($options = [])
+    protected function mockRunMethod(array $options = []): void
     {
         $args = array_merge([
             '-d',
@@ -19,7 +20,7 @@ class PrintTest extends TestCase
         ], $options, ['/tmp/randomfile.txt']);
 
         $this->cli->shouldReceive('run')
-            ->with('lp', $args, \Mockery::type('callable'))
+            ->with('lp', $args, Mockery::type('callable'))
             ->once()
             ->andReturn('request id is PrinterA-1 (1 file(s))');
     }
@@ -29,7 +30,7 @@ class PrintTest extends TestCase
      *
      * @return Printer
      */
-    protected function getPrinter()
+    protected function getPrinter(): Printer
     {
         return new Printer('PrinterA', $this->cli);
     }
