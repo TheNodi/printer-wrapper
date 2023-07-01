@@ -5,14 +5,14 @@ namespace TheNodi\PrinterWrapper\Tests;
 
 use TheNodi\PrinterWrapper\Printer;
 
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     /**
      * Mock printers
      *
      * @return $this
      */
-    protected function mockPrinters()
+    protected function mockPrinters(): self
     {
         $this->cli->shouldReceive('run')
             ->with('lpstat', '-a')
@@ -31,9 +31,10 @@ class ManagerTest extends TestCase
      * Mock default printer
      *
      * @param string $printer Printer name
+     *
      * @return $this
      */
-    protected function mockDefaultPrinter($printer)
+    protected function mockDefaultPrinter(string $printer): self
     {
         $this->cli->shouldReceive('run')
             ->with('lpstat', '-d')
